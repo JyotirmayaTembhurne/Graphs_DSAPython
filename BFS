@@ -1,0 +1,15 @@
+from typing import List
+
+def bfsTraversal(n: int, adj: List[List[int]]) -> List[int]:
+    visited = set()
+    queue = adj[0]
+    result = list()
+    while queue:
+        node = queue.pop(0)
+        if node not in visited:
+            if node != 0:
+                result.append(node)
+            visited.add(node)
+            queue.extend(adj[node])
+    result.insert(0,0)
+    return result
