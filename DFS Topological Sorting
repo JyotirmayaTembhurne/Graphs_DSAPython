@@ -1,0 +1,46 @@
+class Graph:
+    def __init__(self, vertices) -> None:
+        self.vert = vertices
+        self.graph = dict()
+        for i in range(self.vert):
+            self.graph[i] = []
+
+    def AddEdge(self, u, v):
+        if u in self.graph.keys() and v < self.vert:
+            self.graph[u].append(v)
+
+    def DFS_TopologicalSort(self):
+        visited = [False] * self.vert
+        result = []
+        stack = []
+
+        for i in range(self.vert):
+            if not visited[i]:
+                stack.append(i)
+
+                while stack:
+                    current = stack.pop()
+
+                    if not visited[current]:
+                        visited[current] = True
+                        result.append(current)
+
+                    for neighbour in self.graph[current]:
+                        if not visited[neighbour]:
+                            stack.append(neighbour)
+
+        return result[::-1]
+
+
+# Example usage:
+num_vertices = 6
+g = Graph(num_vertices)
+
+# Assuming you have a list of edges [(u1, v1), (u2, v2), ...]
+edges = [(5, 2), (5, 0), (4, 0), (4, 1), (2, 3), (3, 1)]
+
+for edge in edges:
+    g.AddEdge(*edge)
+
+topological_order = g.DFS_TopologicalSort()
+print("DFS Topological Order:", topological_order)
