@@ -1,0 +1,23 @@
+class Solution:
+    def findCircleNum(self, matrix: List[List[int]]) -> int:
+        def DFS(node, matrix, vertices, visited=None):
+            if not visited:
+                visited = set()
+            visited.add(node)
+            for neighbour in range(vertices):
+                if matrix[node][neighbour] == 1 and neighbour not in visited:
+                    visited.add(neighbour)
+                    DFS(neighbour, matrix, vertices, visited)
+
+        def countDisconnectedComponents(vertices, matrix):
+            visited = set()
+            count = 0
+            for node in range(vertices):
+                if node not in visited:
+                    visited.add(node)
+                    count += 1
+                    DFS(node, matrix, vertices, visited)
+            return count
+        answer = countDisconnectedComponents(len(matrix),matrix)
+        return answer
+
