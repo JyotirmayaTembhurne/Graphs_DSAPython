@@ -1,0 +1,43 @@
+# Adjacency List
+def BFS(node, parent, visited, graph):
+    queue = [node]
+    while queue:
+        current = queue.pop(0)
+        if not visited[current]:
+            visited[current] = True
+            for neighbour in graph[current]:
+                if not visited[neighbour]:
+                    queue.append(neighbour)
+                elif neighbour != parent:
+                    return True
+    return False
+
+
+# Adjacency Matrix
+def BFS(node, parent, visited, graph):
+    queue = [node]
+    while queue:
+        current = queue.pop(0)
+        if not visited[current]:
+            visited[current] = True
+            for neighbour in range(len(graph)):
+                if graph[node][neighbour] == 1 and not visited[neighbour]:
+                    queue.append(neighbour)
+                elif graph[node][neighbour] == 1 and parent != neighbour:
+                    return True
+    return False
+
+
+def Detect(graph):
+    vertices = len(graph)
+    visited = [False] * vertices
+    for node in range(vertices):
+        if not visited[node]:
+            if BFS(node, -1, visited, graph):
+                return True
+    return False
+
+
+graph_cyclic = [[0, 1, 1, 0], [1, 0, 1, 0], [1, 1, 0, 1], [0, 0, 1, 0]]
+result_cyclic = Detect(graph_cyclic)
+print(result_cyclic)  # Expected output: True (Graph is cyclic)
