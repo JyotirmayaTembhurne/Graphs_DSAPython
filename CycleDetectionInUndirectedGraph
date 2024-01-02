@@ -1,0 +1,32 @@
+# Adjacency Matrix
+def DFS(node, parent, graph, visited):
+    visited[node] = True
+    for neighbour in range(len(graph)):
+        if graph[node][neighbour] == 1 and not visited[neighbour]:
+            if DFS(neighbour, node, graph, visited):
+                return True
+        elif graph[node][neighbour] == 1 and parent != neighbour:
+            return True
+    return False
+
+
+# Adjacency List
+def DFS(node, parent, graph, visited):
+    visited[node] = True
+    for neighbour in graph[node]:
+        if not visited[neighbour]:
+            if DFS(neighbour, node, graph, visited):
+                return True
+        elif neighbour != parent:
+            return True
+    return False
+
+
+def Detect(graph):
+    vertices = len(graph)
+    visited = [False] * vertices
+    for node in range(vertices):
+        if not visited[node]:
+            if DFS(node, -1, graph, visited):
+                return True
+    return False
