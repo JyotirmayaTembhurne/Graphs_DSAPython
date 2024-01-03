@@ -1,0 +1,34 @@
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        from collections import deque
+        rowlen, collen = len(grid), len(grid[0])
+        queue = deque()
+        fresh = time = 0
+        # To find out the coordinates of rotten oranges and number of fresh oranges. 
+        for r in range(rowlen):
+            for c in range(collen):
+                if grid[r][c] == 2:
+                    queue.append((r, c))
+                if grid[r][c] == 1:
+                    fresh += 1
+        # Directions in which the fresh oranges could be found adjacent to the position of the rotten oranges
+        directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+        while queue and fresh > 0:
+            for i in range(len(queue)):
+                r, c = queue.popleft()
+                for dr, dc in directions:
+                    row, col = r + dr, c + dc
+                    # To check if row and col are inbound and that position is occupied by a fresh orange to make it rotten
+                    if (
+                        (row < 0 or row >= rowlen)
+                        or (col < 0 or col >= collen)
+                        or (grid[row][col] != 1)
+                    ):
+                        continue
+                    grid[row][col] = 2
+                    queue.append((row, col))
+                    fresh -= 1
+            time += 1
+        if fresh == 0:
+            return time
+        return -1
