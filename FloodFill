@@ -1,0 +1,37 @@
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+        from collections import deque
+        def BFS(sr, sc):
+            queue = deque()
+            queue.append((sr,sc))
+            visited = set()
+            visited.add((sr, sc))
+            startColor = image[sr][sc]
+            directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+            while queue:
+                row, col = queue.popleft()
+                for dr, dc in directions:
+                    r = row + dr
+                    c = col + dc
+                    if (
+                        (0 <= r < rowlen)
+                        and (0 <= c < collen)
+                        and (image[r][c] == startColor)
+                        and (r, c) not in visited
+                    ):
+                        queue.append((r, c))
+                        visited.add((r, c))
+            return visited
+
+        if not image:
+            return []
+        if image[sr][sc] == color:
+            return image
+        
+        rowlen, collen = len(image), len(image[0])
+        coords = BFS(sr, sc)
+        for row, col in coords:
+            image[row][col] = color
+
+        return image
