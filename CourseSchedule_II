@@ -1,0 +1,26 @@
+class Solution:
+    def findOrder(self, vertices, edges) -> List[int]:
+        graph = dict()
+        visited = set()
+        stack = list()
+        recursive_stack = [False]*vertices
+        for node in range(vertices):
+            graph[node] = list()
+        for node1,node2 in edges:
+            graph[node2].append(node1)
+        def DFS(node):
+            visited.add(node)
+            recursive_stack[node] = True
+            for neighbour in graph[node]:
+                if neighbour not in visited:
+                    if DFS(neighbour):
+                        return True
+                elif recursive_stack[neighbour]:
+                    return True
+            recursive_stack[node] = False
+            stack.append(node)
+        for node in range(vertices):
+            if node not in visited:
+                if DFS(node):
+                    return []
+        return stack[::-1]
