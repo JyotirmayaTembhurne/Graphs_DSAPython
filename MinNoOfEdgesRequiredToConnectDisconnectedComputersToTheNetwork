@@ -1,0 +1,31 @@
+class Solution:
+    def makeConnected(self, n: int, connections: List[List[int]]) -> int:
+        if len(connections) < n - 1:
+            return -1
+
+        from collections import defaultdict, deque
+        graph = defaultdict(list)
+        visited = set()
+
+        for connection in connections:
+            graph[connection[0]].append(connection[1])
+            graph[connection[1]].append(connection[0])
+
+        def BFS(i):
+            queue = deque([i])
+            while queue:
+                curr = queue.popleft()
+                if curr not in visited:
+                    visited.add(curr)
+                    for neighbour in graph[curr]:
+                        if neighbour not in visited:
+                            queue.append(neighbour)
+
+        answer = 0
+
+        BFS(0)
+        for i in range(n):
+            if i not in visited:
+                answer+=1
+                BFS(i)
+        return answer
