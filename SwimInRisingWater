@@ -1,0 +1,26 @@
+class Solution:
+    def swimInWater(self, grid: List[List[int]]) -> int:
+        import heapq
+        t = 0
+        goal = grid[-1][-1]
+        pq = [(grid[0][0], 0, 0)]
+        visited = set()
+        directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+        while pq:
+            node, r, c = heapq.heappop(pq)
+            if node in visited:
+                continue
+            visited.add(node)
+            if not t or node > t:
+                t = node
+            if node == goal:
+                break
+            for dr, dc in directions:
+                if (
+                    0 <= dr + r < len(grid)
+                    and 0 <= dc + c < len(grid)
+                    and grid[dr + r][dc + c] not in visited
+                ):
+                    heapq.heappush(pq, (grid[dr + r][dc + c], dr + r, dc + c))
+        return t
+    
