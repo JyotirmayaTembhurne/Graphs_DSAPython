@@ -1,0 +1,27 @@
+from typing import List
+import heapq
+from collections import defaultdict
+def shortestPath(n:int, edges: List[List[int]], src:int ) -> List[int]:
+    answer = [float("inf")]*n
+    answer[src] = 0
+    visited = set()
+    graph = defaultdict(list)
+    pq = [(0,src)]
+    for node1,node2 in edges:
+        graph[node1].append(node2)
+        graph[node2].append(node1)
+    while pq:
+        edge,node=heapq.heappop(pq)
+        if node in visited:
+            continue
+        visited.add(node)
+        for neighbour in graph[node]:
+            if neighbour not in visited:
+                newdist = edge+1
+                if newdist<answer[neighbour]:
+                    answer[neighbour] = newdist
+                    heapq.heappush(pq,(newdist,neighbour))
+    for i in range(n):
+        if answer[i] == float("inf"):
+            answer[i] = -1
+    return answer
