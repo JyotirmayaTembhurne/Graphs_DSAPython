@@ -1,0 +1,26 @@
+from  typing import *
+from collections import defaultdict
+import heapq
+def shortestPathInDAG(n: int, m: int, edges: List[List[int]]) -> List[int]:
+    answer = [float("inf")]*n
+    answer[0] = 0
+    graph = defaultdict(list)
+    visited = set()
+    pq = [(0,0)]
+    for node1,node2,weight in edges:
+        graph[node1].append((weight,node2))
+    while pq:
+        dist,node = heapq.heappop(pq)
+        if node in visited:
+            continue
+        visited.add(node)
+        for edge,neighbour in graph[node]:
+            if neighbour not in visited:
+                newdist = dist+edge
+                if newdist<answer[neighbour]:
+                    answer[neighbour] = newdist
+                    heapq.heappush(pq,(newdist,neighbour))
+    for i in range(n):
+        if answer[i] == float("inf"):
+            answer[i] = -1
+    return answer
