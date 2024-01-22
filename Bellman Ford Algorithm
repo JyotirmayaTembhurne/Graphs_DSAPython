@@ -1,0 +1,15 @@
+dist = [float("inf")] * n+1
+    dist[0] = 0
+    dist[src] = 0
+    for i in range(1,n):
+        for source, dest, weight in edges:
+            if dist[source] + weight < dist[dest]:
+                dist[dest] = dist[source] + weight
+    for i in range(1,n):
+        if dist[i] == float("inf"):
+            dist[i] = 10**8
+    return dist[1:]
+    to check negative weight cycles.
+    # for source, dest, weight in edges:
+    #     if dist[source] + weight < dist[dest]:
+    #         dist[dest] = dist[source] + weight
