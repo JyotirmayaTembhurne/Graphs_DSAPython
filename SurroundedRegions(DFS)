@@ -1,0 +1,30 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        # Algorithm -
+        # 1. Capture unsurrounded regions, i.e., the regions that aren't surrounded by Xes (Replace the Os in the unsurrounded regions by True or T).
+        # 2. Turn all the surrounded regions to Xes. (O in surrounded regions to X).
+        # 3. Uncapture surrounded regions (Replacing the Os replaced by True in step 1 with Os again.)
+                
+        rows, cols = len(board), len(board[0])
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+
+        def Capture(r, c):
+            if 0 <= r < rows and 0 <= c < cols and board[r][c] == "O":
+                board[r][c] = False
+                for dr, dc in directions:
+                    Capture(r + dr, c + dc)
+
+        for i in range(rows):
+            for j in range(cols):
+                if board[i][j] == "O" and (i in {0, rows - 1} or j in {0, cols - 1}):
+                    Capture(i, j)
+
+        for i in range(rows):
+            for j in range(cols):
+                if board[i][j] == "O":
+                    board[i][j] = "X"
+
+        for i in range(rows):
+            for j in range(cols):
+                if not board[i][j]:
+                    board[i][j] = "O"
