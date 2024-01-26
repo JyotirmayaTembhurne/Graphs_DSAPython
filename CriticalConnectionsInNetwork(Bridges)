@@ -1,0 +1,38 @@
+from collections import defaultdict
+from typing import List
+
+class Solution:
+    def criticalConnections(self, n: int, connections: List[List[int]]) -> List[List[int]]:
+        # Refer Youtube to revise. 
+        graph = defaultdict(list)
+        visited = set()
+        low, disc = dict(), dict()
+        time = 0
+        bridges = list()
+
+        for n1, n2 in connections:
+            graph[n1].append(n2)
+            graph[n2].append(n1)
+
+        def DFS(node, parent, visited, low, disc, time, bridges):
+            nonlocal graph
+            visited.add(node)
+            low[node] = disc[node] = time
+            time += 1
+
+            for nei in graph[node]:
+                if nei == parent:
+                    continue
+                if nei not in visited:  
+                    DFS(nei, node, visited, low, disc, time, bridges)
+                    low[node] = min(low[node], low[nei])
+                    if low[nei] > disc[node]:
+                        bridges.append([nei, node])
+                else:
+                    low[node] = min(low[node], disc[nei])
+
+        for i in range(n):
+            if i not in visited:
+                DFS(i, None, visited, low, disc, time, bridges)
+
+        return bridges
