@@ -1,0 +1,55 @@
+from collections import defaultdict
+
+adj = {
+    0: [1],
+    1: [2],
+    2: [3],
+    3: [],
+}
+
+n = 4
+stack = []
+visited = set()
+number_of_scc = 0
+groups_of_scc = []
+
+
+def DFS1(node, visited, stack, graph):
+    visited.add(node)
+    for nei in graph[node]:
+        if nei not in visited:
+            DFS1(nei, visited, stack, graph)
+    stack.append(node)
+
+
+for i in range(n):
+    if i not in visited:
+        DFS1(i, visited, stack, adj)
+
+radj = defaultdict(list)
+for i in range(n):
+    for nei in adj[i]:
+        radj[nei].append(i)
+
+visited.clear()
+
+
+def DFS2(node, visited, graph):
+    visited.add(node)
+    group = [node]
+    for nei in graph[node]:
+        if nei not in visited:
+            group += DFS2(nei, visited, graph)
+    return group
+
+
+while stack:
+    node = stack.pop()
+    if node not in visited:
+        x = DFS2(node, visited, radj)
+        number_of_scc += 1
+        groups_of_scc.append(x)
+
+
+print("Number of Strongly Connected Components:", number_of_scc)
+print("Groups of Strongly Connected Components:", groups_of_scc)
