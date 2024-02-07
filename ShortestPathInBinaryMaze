@@ -1,0 +1,23 @@
+class Solution:
+    import heapq
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:    
+        if grid[0][0] != 0:
+            return -1
+        pq = [(1, 0, 0)]  # Node1,Node2,Distance
+        directions = [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]]
+        visited = set()
+        while pq:
+            dist, r, c = heapq.heappop(pq)
+            if r == len(grid) - 1 and c == len(grid) - 1:
+                return dist
+            for dr, dc in directions:
+                nr, nc = dr + r, dc + c
+                if (
+                    nr in range(0, len(grid))
+                    and nc in range(0, len(grid))
+                    and (nr, nc) not in visited
+                    and grid[nr][nc] == 0
+                ):
+                    heapq.heappush(pq, (dist + 1, nr, nc))
+                    visited.add((nr,nc))
+        return -1
